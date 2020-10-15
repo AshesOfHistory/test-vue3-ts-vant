@@ -2,7 +2,7 @@
 <div>
   <van-swipe v-if="slideList.length" :autoplay="3000" class="my-swipe" indicator-color="white">
     <van-swipe-item v-for="slide in slideList" :key="slide.url">
-      <img :src="slide.url" alt="" style="width: 100%">
+      <img :src="slide.url" alt="" style="width: 100%;height: 100px;">
     </van-swipe-item>
   </van-swipe>
 </div>
@@ -11,6 +11,7 @@
 <style lang="scss">
 .my-swipe .van-swipe-item {
   margin-top: 10px;
+  
 }
 </style>
 

@@ -49,7 +49,6 @@ export const home: Module<IHomeState, IGlobalState> = {
         return
       }
       commit(Types.SET_LOADING, true) // 开始加载数据
-      console.log('getLessonList here')
       // 获取列表数据
       let lessons = await getLessons<ILessons>(state.currentCategory, state.lessons.offset, state.lessons.limit)
 
