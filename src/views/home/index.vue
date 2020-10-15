@@ -1,19 +1,20 @@
 <template>
   <div>
-    <HomeHeader :category="category" @setCurrentCategory="setCurrentCategory"></HomeHeader>
-    
+    <HomeHeader
+      :category="category"
+      @setCurrentCategory="setCurrentCategory"
+    ></HomeHeader>
+
     <div class="home-container">
       <Suspense>
         <template #default>
           <HomeSwiper></HomeSwiper>
         </template>
-        <template #fallback>
-          loading...
-        </template>
+        <template #fallback> loading... </template>
       </Suspense>
     </div>
 
-    <HomeList></HomeList>
+    <HomeList :lessonList="lessonList"></HomeList>
   </div>
 </template>
 
@@ -24,7 +25,7 @@ import HomeList from "./homeList.vue";
 import HomeSwiper from "./homeSwiper.vue";
 import HomeHeader from "./homeHeader.vue";
 import { useStore, Store } from "vuex";
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, onMounted } from "vue";
 import * as Types from "@/store/action-types";
 
 function useCategory(store: Store<IGlobalState>) {
@@ -34,26 +35,42 @@ function useCategory(store: Store<IGlobalState>) {
   }
   return {
     category,
-    setCurrentCategory
+    setCurrentCategory,
   };
 }
 
-function useLessonList(store: Store<IGlobalState>) {}
+function useLessonList(store: Store<IGlobalState>) {
+  const lessonList = computed(() => store.state.home.lessons.list);
+  onMounted(() => {
+    // 注意这边的computed返回的是响应式数据，需要.value才能拿到数据
+    if (lessonList.value.length === 0) {
+      store.dispatch(`home/${Types.SET_LESSON_LIST}`);
+    }
+  });
+  return {
+    lessonList
+  }
+}
 
 export default defineComponent({
   components: {
     HomeList,
     HomeSwiper,
-    HomeHeader
+    HomeHeader,
   },
   setup() {
+    // 获取store
     let store = useStore<IGlobalState>();
+    // 使用自定义钩子函数获取分类
     let { category, setCurrentCategory } = useCategory(store);
+    // 使用自定义钩子函数获取课程数据
+    let { lessonList } = useLessonList(store)
     return {
       category,
-      setCurrentCategory
+      setCurrentCategory,
+      lessonList
     };
-  }
+  },
 });
 </script>
 

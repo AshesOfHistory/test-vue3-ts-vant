@@ -17,14 +17,16 @@ export interface ILesson {
   category?: string
 }
 
+export type ILessons = {
+  loading: boolean,
+  hasMore: boolean,
+  list: ILesson[],
+  limit: number,
+  offset: number
+}
+
 export interface IHomeState {
   currentCategory: CATEGORY_TYPES,
   sliders: ISlider[],
-  lessons: {
-    loading: boolean,
-    hasMore: boolean,
-    list: ILesson[],
-    limit: number,
-    offset: number
-  },
+  lessons: ILessons,
 }
