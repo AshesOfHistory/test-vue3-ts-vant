@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "start": "pm2 start ./server.js --name test-vue3-ts-vant --watch",
+    "stop": "pm2 stop test-vue3-ts-vant"
   },
   "dependencies": {
     "@types/lodash": "^4.14.162",
